@@ -20,5 +20,6 @@ namespace RentACarMVC.Context
         }
 
         public DbSet<Tipo> Tipos { get; set; }
+        public DbSet<Marca> Marcas { get; set; }
     }
 }

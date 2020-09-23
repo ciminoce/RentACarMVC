@@ -45,7 +45,15 @@
                     @Html.DisplayFor(m => item.NombreMarca)
                 </td>
                 <td>
-                    @Html.DisplayFor(m=>item.Logo)
+                    @if (!string.IsNullOrEmpty(item.Logo))
+                    {
+                        <img src="@Url.Content(item.Logo)" alt="Image" style="width:100px;height:150px;max-width: 100%; height: auto;" />
+                    }
+                    else
+                    {
+                        <img src="@Url.Content("~/Content/Images/Marcas/SinImagenDisponible.jpg")" alt="Image" style="width:100px;height:150px;max-width: 100%; height: auto;" />
+                       
+                    }
                 </td>
                 <td>
                     <a href="@Url.Action("Edit","Marcas",new{id=item.MarcaId})" class="btn btn-warning"><i class="fas fa-edit"></i> Editar</a>

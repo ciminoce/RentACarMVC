@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Web;
 
 namespace RentACarMVC.ViewModels.Marca
 {
-    public class MarcaListViewModel
+    public class MarcaEditViewModel
     {
         public int MarcaId { get; set; }
 
@@ -14,6 +15,9 @@ namespace RentACarMVC.ViewModels.Marca
 
         [DataType(DataType.ImageUrl)]
         public string Logo { get; set; }
+
+        [Display(Name = "Logo")]
+        public HttpPostedFileBase LogoFile { get; set; }
 
     }
 }

@@ -1,0 +1,90 @@
+﻿@model IEnumerable<RentACarMVC.ViewModels.Modelo.ModeloListViewModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div>
+    <a href="@Url.Action("Create", "Modelos")" class="btn btn-primary" style="float: right">
+        <i class="far fa-file-alt"></i>
+        Nuevo
+    </a>
+    <h2>Lista de Modelos de Vehículos</h2>
+    <hr />
+
+</div>
+@if (TempData["Msg"] != null)
+{
+    var msg = (string)TempData["Msg"];
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Éxito!</strong> @msg.
+    </div>
+
+}
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(m => m.Marca)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Tipo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.NombreModelo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Foto)
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            foreach (var modelo in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(m => modelo.Marca)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => modelo.Tipo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => modelo.NombreModelo)
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(modelo.Foto))
+                        {
+                            <img src="@Url.Content(modelo.Foto)" alt="Image" style="width:100px;height:150px;max-width: 100%; height: auto;" />
+                        }
+                        else
+                        {
+                            <img src="@Url.Content("~/Content/Images/Modelos/SinImagenDisponible.jpg")" alt="Image" style="width:100px;height:150px;max-width: 100%; height: auto;" />
+                       
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Edit","Modelos",new{id=modelo.ModeloId})" class="btn btn-warning"><i class="fas fa-edit"></i> Editar</a>
+                        <a href="#" class="btn btn-info"><i class="fas fa-list"></i> Detalle</a>
+                        <a href="@Url.Action("Delete", "Modelos", new {id = modelo.ModeloId})" class="btn btn-danger">
+                            <i class="fas fa-trash-alt"></i> Borrar
+                        </a>
+
+
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5"> No se ingresaron modelos todavía</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

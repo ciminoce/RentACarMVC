@@ -133,15 +133,19 @@
     <Compile Include="Context\RentACarDbContext.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MarcasController.cs" />
+    <Compile Include="Controllers\ModelosController.cs" />
     <Compile Include="Controllers\TiposController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Marca.cs" />
+    <Compile Include="Models\Modelo.cs" />
     <Compile Include="Models\Tipo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Marca\MarcaEditViewModel.cs" />
     <Compile Include="ViewModels\Marca\MarcaListViewModel.cs" />
+    <Compile Include="ViewModels\Modelo\ModeloEditViewModel.cs" />
+    <Compile Include="ViewModels\Modelo\ModeloListViewModel.cs" />
     <Compile Include="ViewModels\Tipo\TipoEditViewModel.cs" />
     <Compile Include="ViewModels\Tipo\TipoListViewModel.cs" />
   </ItemGroup>
@@ -292,10 +296,13 @@
     <Content Include="Views\Marcas\Create.cshtml" />
     <Content Include="Views\Marcas\Edit.cshtml" />
     <Content Include="Views\Marcas\Delete.cshtml" />
+    <Content Include="Views\Modelos\Index.cshtml" />
+    <Content Include="Views\Modelos\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Images\Marcas\" />
+    <Folder Include="Content\Images\Modelos\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

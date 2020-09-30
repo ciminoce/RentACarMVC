@@ -298,6 +298,8 @@
     <Content Include="Views\Marcas\Delete.cshtml" />
     <Content Include="Views\Modelos\Index.cshtml" />
     <Content Include="Views\Modelos\Create.cshtml" />
+    <Content Include="Views\Modelos\Delete.cshtml" />
+    <Content Include="Views\Modelos\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

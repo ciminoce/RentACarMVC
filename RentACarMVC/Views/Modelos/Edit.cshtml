@@ -1,24 +1,26 @@
 ﻿@model RentACarMVC.ViewModels.Modelo.ModeloEditViewModel
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
 }
 
-<h2>Nuevo Modelo</h2>
+<h2>Editar Modelo</h2>
 <hr />
-@using (Html.BeginForm("Create", "Modelos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Edit", "Modelos", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true,"",new{@class="text-danger"})
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m=>m.ModeloId)
+    @Html.HiddenFor(m=>m.Foto)
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
                 @Html.LabelFor(m => m.MarcaId)
-                @Html.DropDownListFor(m => m.MarcaId, new SelectList(Model.Marcas,"MarcaId","NombreMarca"),"Seleccione Marca", new { @class = "form-control", autofocus="autofocus" })
+                @Html.DropDownListFor(m => m.MarcaId, new SelectList(Model.Marcas, "MarcaId", "NombreMarca"), "Seleccione Marca", new { @class = "form-control", autofocus = "autofocus" })
                 @Html.ValidationMessageFor(m => m.MarcaId, "", new { @class = "text-danger" })
             </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.TipoId)
-                @Html.DropDownListFor(m => m.TipoId,new SelectList(Model.Tipos,"TipoId","Descripcion"),"Seleccione Tipo", new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.TipoId, new SelectList(Model.Tipos, "TipoId", "Descripcion"), "Seleccione Tipo", new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.TipoId, "", new { @class = "text-danger" })
             </div>
             <div class="form-group">
@@ -34,20 +36,17 @@
 
         </div>
         <div class="col-md-6">
-            
+
             <div class="container">
                 <h2>Foto del Modelo</h2>
-                
+
                 <div class="card" style="width:400px">
-                    <img class="card-img-top" id="imgSalida"src="" alt="Imagen del Modelo" style="width:100%">
+                    <img class="card-img-top" id="imgSalida" src="@Url.Content(Model.Foto)" alt="Imagen del Modelo" style="width:100%">
                     <div class="card-body">
                         <h4 class="card-title">
-                           
-                            @if (Model.NombreModelo != null)
-                            {
+
                                 @Model.NombreModelo
-                                
-                            }
+
                         </h4>
                         <p class="card-text">Presione el botón para seleccionar una imagen</p>
                         <span class="form-control-file" id="file-input">
@@ -56,7 +55,7 @@
                     </div>
                 </div>
                 <br>
-  
+
             </div>
 
         </div>

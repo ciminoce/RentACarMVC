@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Management.Instrumentation;
 using System.Net;
 using System.Web.Mvc;
 using RentACarMVC.Classes;
@@ -166,6 +167,7 @@ namespace RentACarMVC.Controllers
             }
 
             MarcaListViewModel marcaVm = ConstruirMarcaList(marca);
+            
             return View(marcaVm);
 
         }
@@ -179,6 +181,11 @@ namespace RentACarMVC.Controllers
             {
                 _dbContext.Marcas.Remove(marca);
                 _dbContext.SaveChanges();
+                if (!marca.Logo.Contains("SinImagenDisponible"))
+                {
+                    var response = Helper.DeletePhoto(marca.Logo);
+                    
+                }
                 TempData["Msg"] = "Registro borrada";
                 return RedirectToAction("Index");
             }

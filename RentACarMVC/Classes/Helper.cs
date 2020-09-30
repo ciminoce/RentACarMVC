@@ -25,6 +25,23 @@ namespace RentACarMVC.Classes
             }
 
         }
+        public static bool DeletePhoto(string name)
+        {
+            try
+            {
+                var archiv = new FileInfo(HttpContext.Current.Server.MapPath(name));
+                if (!archiv.Exists)
+                {
+                    return false;
+                }
+                archiv.Delete();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
     }
 }

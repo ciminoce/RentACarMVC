@@ -6,6 +6,8 @@ using System.Net;
 using System.Web.Mvc;
 using RentACarMVC.Context;
 using RentACarMVC.Models;
+using RentACarMVC.ViewModels;
+using RentACarMVC.ViewModels.Marca;
 using RentACarMVC.ViewModels.Tipo;
 
 namespace RentACarMVC.Controllers
@@ -13,17 +15,40 @@ namespace RentACarMVC.Controllers
     public class TiposController : Controller
     {
         private readonly RentACarDbContext _dbContext;
+        private readonly int _registrosPorPagina = 4;
+        private Listador<TipoListViewModel> _listador;
 
         public TiposController()
         {
             _dbContext=new RentACarDbContext();
         }
         // GET: Tipos
-        public ActionResult Index()
+        public ActionResult Index(int pagina=1)
         {
-            var listaTipos = _dbContext.Tipos.ToList();
+            int totalRegistros = 0;
+            // Número total de registros de la tabla Customers
+            totalRegistros = _dbContext.Tipos.Count();
+            // Obtenemos la 'página de registros' de la tabla Customers
+            var listaTipos = _dbContext.Tipos
+                .OrderBy(t => t.Descripcion)
+                .Skip((pagina - 1) * _registrosPorPagina)
+                .Take(_registrosPorPagina)
+                .ToList();
             var listaVm = ConstruirListaVm(listaTipos);
-            return View(listaVm);
+            // Número total de páginas de la tabla Customers
+            var totalPaginas = (int)Math.Ceiling((double)totalRegistros / _registrosPorPagina);
+            // Instanciamos la 'Clase de paginación' y asignamos los nuevos valores
+            _listador = new Listador<TipoListViewModel>()
+            {
+                RegistrosPorPagina = _registrosPorPagina,
+                TotalPaginas = totalPaginas,
+                TotalRegistros = totalRegistros,
+                PaginaActual = pagina,
+                Registros = listaVm
+            };
+
+
+            return View(_listador);
         }
 
         private List<TipoListViewModel> ConstruirListaVm(List<Tipo> listaTipos)

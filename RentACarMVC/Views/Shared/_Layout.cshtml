@@ -1,58 +1,73 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>@ViewBag.Title - Mi aplicación ASP.NET</title>
-<script src="https://kit.fontawesome.com/766389a881.js" crossorigin="anonymous"></script>
+    <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand " href="#">Rent-A-Car App</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand " href="#">Rent-A-Car App</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="@Url.Action("Index","Home")">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="@Url.Action("Contact","Home")">Contacto</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="@Url.Action("About","Home")">Acerca de</a>
+                    </li>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="@Url.Action("Index","Home")">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="@Url.Action("Contact","Home")">Contacto</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="@Url.Action("About","Home")">Acerca de</a>
-                </li>
+                    <li class="nav-item active dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Archivos
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="@Url.Action("Index","Tipos")">Tipos</a>
+                            <a class="dropdown-item" href="@Url.Action("Index","Marcas")">Marcas</a>
+                            <a class="dropdown-item" href="@Url.Action("Index","Modelos")">Modelos</a>
 
-                <li class="nav-item active dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Archivos
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="@Url.Action("Index","Tipos")">Tipos</a>
-                        <a class="dropdown-item" href="@Url.Action("Index","Marcas")">Marcas</a>
-                        <a class="dropdown-item" href="@Url.Action("Index","Modelos")">Modelos</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
 
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item active dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Administrador
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="@Url.Action("Index", "Usuarios")">Usuarios</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", "RolesAdmin")">Roles</a>
+                            </div>
+
+                        </li>
+
+                    }
+                    @Html.Partial("_LoginPartial")
+
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
 

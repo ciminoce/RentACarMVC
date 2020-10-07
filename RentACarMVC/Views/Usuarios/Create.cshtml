@@ -1,0 +1,69 @@
+﻿@model RentACarMVC.ViewModels.Usuarios.UsuarioEditViewModel
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Nuevo Modelo</h2>
+<hr />
+@using (Html.BeginForm("Create", "Usuarios", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.NombreUsuario)
+                @Html.TextBoxFor(m => m.NombreUsuario, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.NombreUsuario, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Nombres)
+                @Html.TextBoxFor(m => m.Nombres, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Nombres, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Apellido)
+                @Html.TextBoxFor(m => m.Apellido, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Apellido, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.DocumentoNro)
+                @Html.TextBoxFor(m => m.DocumentoNro, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.DocumentoNro, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Direccion)
+                @Html.TextBoxFor(m => m.Direccion, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Direccion, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.FechaIngreso)
+                @Html.TextBoxFor(m => m.FechaIngreso, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.FechaIngreso, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.MovilNumero)
+                @Html.TextBoxFor(m => m.MovilNumero, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.MovilNumero, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Rol)
+                @Html.DropDownListFor(m => m.Rol, new SelectList(Model.ListaRoles, "Id", "Name"), "Seleccione Rol", new { @class = "form-control", autofocus = "autofocus" })
+                @Html.ValidationMessageFor(m => m.Rol, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Guardar</button>
+                <a href="@Url.Action("Index", "Modelos")" class="btn btn-success">Volver</a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+}

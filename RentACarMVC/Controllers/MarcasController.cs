@@ -2,32 +2,62 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Management.Instrumentation;
 using System.Net;
 using System.Web.Mvc;
 using RentACarMVC.Classes;
 using RentACarMVC.Context;
 using RentACarMVC.Models;
+using RentACarMVC.ViewModels;
 using RentACarMVC.ViewModels.Marca;
 
 namespace RentACarMVC.Controllers
 {
+    [Authorize]
     public class MarcasController : Controller
     {
         private readonly RentACarDbContext _dbContext;
-
+        private readonly int _registrosPorPagina = 6;
+        private Listador<MarcaListViewModel> _listador;
         public MarcasController()
         {
             _dbContext=new RentACarDbContext();
         }
         // GET: Marcas
-        public ActionResult Index()
+        
+        public ActionResult Index(int pagina=1)
         {
-            var listaMarca = _dbContext.Marcas.ToList();
-            var listaVm = ConstruirListaVm(listaMarca);
-            return View(listaVm);
-        }
 
+            int totalRegistros = 0;
+            // Número total de registros de la tabla Customers
+            totalRegistros = _dbContext.Marcas.Count();
+            // Obtenemos la 'página de registros' de la tabla Customers
+            var listaMarca = _dbContext.Marcas
+                .OrderBy(m => m.NombreMarca)
+                .Skip((pagina - 1) * _registrosPorPagina)
+                .Take(_registrosPorPagina)
+                .ToList();
+            var listaVm = ConstruirListaVm(listaMarca);
+            // Número total de páginas de la tabla Customers
+            var totalPaginas = (int)Math.Ceiling((double)totalRegistros / _registrosPorPagina);
+            // Instanciamos la 'Clase de paginación' y asignamos los nuevos valores
+            _listador = new Listador<MarcaListViewModel>()
+            {
+                RegistrosPorPagina = _registrosPorPagina,
+                TotalPaginas = totalPaginas,
+                TotalRegistros = totalRegistros,
+                PaginaActual = pagina,
+                Registros = listaVm
+            };
+
+            //if (User.IsInRole("Admin"))
+            //{
+            //    return View(listaVm);
+                
+            //}
+
+            //return View("ReadOnlyIndex", listaVm);
+            return View(_listador);
+        }
         [HttpGet]
         public ActionResult Create()
         {

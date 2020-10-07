@@ -1,0 +1,53 @@
+﻿@model IEnumerable<RentACarMVC.ViewModels.Marca.MarcaListViewModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div>
+    <h2>Lista de Marcas</h2>
+    <hr />
+
+</div>
+<table class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(m => m.NombreMarca)
+        </th>
+        <th>
+            @Html.DisplayNameFor(m=>m.Logo)
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @if (Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => item.NombreMarca)
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.Logo))
+                    {
+                        <img src="@Url.Content(item.Logo)" alt="Image" style="width:100px;height:150px;max-width: 100%; height: auto;" />
+                    }
+                    else
+                    {
+                        <img src="@Url.Content("~/Content/Images/Marcas/SinImagenDisponible.jpg")" alt="Image" style="width:100px;height:150px;max-width: 100%; height: auto;" />
+                       
+                    }
+                </td>
+            </tr>
+        }
+
+    }
+    else
+    {
+        <tr>
+            <td colspan="2"  style="text-align: center">No se agregaron marcas todavía</td>
+        </tr>
+    }
+    </tbody>
+</table>

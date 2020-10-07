@@ -1,15 +1,16 @@
-﻿@model IEnumerable<RentACarMVC.ViewModels.Marca.MarcaListViewModel>
+﻿@model RentACarMVC.ViewModels.Listador<RentACarMVC.ViewModels.Marca.MarcaListViewModel>
 @{
     ViewBag.Title = "Index";
 }
 
 <div>
+    @if (User.IsInRole("Admin")) { 
     <a href="@Url.Action("Create", "Marcas")" class="btn btn-primary" style="float: right">
         <i class="far fa-file-alt"></i>
         Nuevo
-    </a>
+    </a>}
     <h2>Lista de Marcas</h2>
-    <hr />
+    <hr/>
 
 </div>
 @if (TempData["Msg"] != null)
@@ -25,10 +26,10 @@
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(m => m.NombreMarca)
+            @Html.DisplayNameFor(m => m.Registros.First().NombreMarca)
         </th>
         <th>
-            @Html.DisplayNameFor(m=>m.Logo)
+            @Html.DisplayNameFor(m=>m.Registros.First().Logo)
         </th>
         <th>
 
@@ -36,9 +37,9 @@
     </tr>
     </thead>
     <tbody>
-    @if (Model.Any())
+    @if (Model.Registros.Any())
     {
-        foreach (var item in Model)
+        foreach (var item in Model.Registros)
         {
             <tr>
                 <td>
@@ -75,3 +76,55 @@
     }
     </tbody>
 </table>
+@*CÓDIGO PARA EL PAGINADOR DE REGISTROS*@
+@if (Model.Registros.Any())
+{
+    <span>
+        <strong>@Model.TotalRegistros</strong> registros encontrados
+    </span>
+    <span>&nbsp;|&nbsp;</span>
+    <span>
+        Página <strong>@(Model.PaginaActual)</strong> de 
+        <strong>@Model.TotalPaginas</strong>
+    </span>
+    <span>&nbsp;|&nbsp;</span>
+}
+else
+{
+    <span>No hay resultados para esta búsqueda</span>
+    <span>&nbsp;|&nbsp;</span>
+}
+
+@if (Model.PaginaActual > 1)
+{
+    @Html.ActionLink("<<", "Index", new { pagina = 1 },
+        new { @class = "btn btn-sm btn-secondary" })
+    <span></span>
+    @Html.ActionLink("Anterior", "Index", new { pagina = Model.PaginaActual - 1 },
+        new { @class = "btn btn-sm btn-secondary" })
+}
+else
+{
+    @Html.ActionLink("<<", "Index", new { pagina = 1 },
+        new { @class = "btn btn-sm btn-secondary disabled" })
+    <span></span>
+    @Html.ActionLink("Anterior", "Index", new { pagina = 1 },
+        new { @class = "btn btn-sm btn-secondary disabled" })
+}
+<span></span>
+@if (Model.PaginaActual < Model.TotalPaginas)
+{
+    @Html.ActionLink("Siguiente", "Index", new { pagina = Model.PaginaActual + 1 },
+        new { @class = "btn btn-sm btn-secondary" })
+    <span></span>
+    @Html.ActionLink(">>", "Index", new { pagina = Model.TotalPaginas },
+        new { @class = "btn btn-sm btn-secondary" })
+}
+else
+{
+    @Html.ActionLink("Siguiente", "Index", new { pagina = Model.TotalPaginas - 1 },
+        new { @class = "btn btn-sm btn-secondary disabled" })
+    <span></span>
+    @Html.ActionLink(">>", "Index", new { pagina = Model.TotalPaginas },
+        new { @class = "btn btn-sm btn-secondary disabled" })
+}

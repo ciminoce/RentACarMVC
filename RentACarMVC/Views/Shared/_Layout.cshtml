@@ -37,9 +37,8 @@
                             <a class="dropdown-item" href="@Url.Action("Index","Marcas")">Marcas</a>
                             <a class="dropdown-item" href="@Url.Action("Index","Modelos")">Modelos</a>
 
-                            <a class="dropdown-item" href="#">Another action</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                            <a class="dropdown-item" href="@Url.Action("Index","Autos")">Autos</a>
                         </div>
 
                     </li>
@@ -52,6 +51,10 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="@Url.Action("Index", "Usuarios")">Usuarios</a>
                                 <a class="dropdown-item" href="@Url.Action("Index", "RolesAdmin")">Roles</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="@Url.Action("Index", "Usuarios",new{roleName="Cliente"})">Clientes</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", "Usuarios",new{roleName="Chofer"})">Choferes</a>
+
                             </div>
 
                         </li>

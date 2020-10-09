@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using RentACarMVC.Classes;
@@ -8,7 +9,7 @@ using RentACarMVC.ViewModels.Usuarios;
 
 namespace RentACarMVC.Controllers
 {
-    [Authorize(Users = "admin@example.com")]
+    [Authorize(Roles = "Admin")]
     public class UsuariosController : Controller
     {
         private readonly RentACarDbContext _dbContext;
@@ -19,12 +20,59 @@ namespace RentACarMVC.Controllers
             _applicationDb=new ApplicationDbContext();
         }
         // GET: Usuarios
-        public ActionResult Index()
+        public ActionResult Index(string roleName=null)
         {
             var lista = _dbContext.Usuarios.ToList();
-            return View(lista);
+            var listaVm = ConstruirListaUsuarioListViewModel(lista, roleName);
+            TempData["Rol"] = "Usuarios";
+            if (roleName=="Chofer")
+            {
+                TempData["Rol"] = "Choferes";
+            }
+            else if(roleName=="Cliente")
+            {
+                TempData["Rol"] = "Clientes";
+            }
+            return View(listaVm);
         }
 
+        private List<UsuarioListViewModel> ConstruirListaUsuarioListViewModel(List<Usuario> lista,string roleName)
+        {
+            List<UsuarioListViewModel> listaVm=new List<UsuarioListViewModel>();
+            foreach (var usuario in lista)
+            {
+                if (!string.IsNullOrEmpty(roleName))
+                {
+                    if (UssersHelper.GetUserRole(usuario.NombreUsuario)==roleName)
+                    {
+                        UsuarioListViewModel usuarioVm = ConstruirListaUsuarioListViewModel(usuario);
+                        listaVm.Add(usuarioVm);
+                    }
+                }
+                else
+                {
+                     UsuarioListViewModel usuarioVm = ConstruirListaUsuarioListViewModel(usuario);
+                    listaVm.Add(usuarioVm);
+                   
+                }
+            }
+
+            return listaVm;
+        }
+
+        private UsuarioListViewModel ConstruirListaUsuarioListViewModel(Usuario usuario)
+        {
+            return new UsuarioListViewModel
+            {
+                UsuarioId = usuario.UsuarioId,
+                Nombres = usuario.Nombres,
+                Apellido = usuario.Apellido,
+                MovilNumero = usuario.MovilNumero,
+                Direccion = usuario.Direccion
+            };
+        }
+
+        [Authorize(Users = "admin@example.com")]
         [HttpGet]
         public ActionResult Create()
         {

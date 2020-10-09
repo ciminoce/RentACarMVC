@@ -1,0 +1,67 @@
+﻿@model RentACarMVC.ViewModels.Auto.AutoEditViewModel
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Nuevo Auto</h2>
+<hr />
+@using (Html.BeginForm("Create", "Autos", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.MovilId)
+                @Html.TextBoxFor(m => m.MovilId, new { @class = "form-control", autofocus = "autofocus" })
+                @Html.ValidationMessageFor(m => m.MovilId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Patente)
+                @Html.TextBoxFor(m => m.Patente, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Patente, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.TipoId)
+                @Html.DropDownListFor(m => m.TipoId, new SelectList(Model.Tipos, "TipoId", "Descripcion"), "Seleccione Tipo", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.TipoId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.MarcaId)
+                @Html.DropDownListFor(m => m.MarcaId, new SelectList(Model.Marcas, "MarcaId", "NombreMarca"), "Seleccione Marca", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.MarcaId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.ModeloId)
+                @Html.DropDownListFor(m => m.ModeloId, new SelectList(Model.Modelos, "ModeloId", "NombreModelo"), "Seleccione Modelo", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ModeloId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.UsuarioId)
+                @Html.DropDownListFor(m => m.UsuarioId, new SelectList(Model.Usuarios, "UsuarioId", "NombreApellido"), "Seleccione Chofer", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.UsuarioId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Guardar</button>
+                <a href="@Url.Action("Index", "Modelos")" class="btn btn-success">Volver</a>
+
+            </div>
+
+        </div>
+    </div>
+
+}
+@section scripts
+{
+    <script>
+
+
+    </script>
+
+}
+
+

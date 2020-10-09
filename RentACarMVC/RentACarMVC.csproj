@@ -174,6 +174,7 @@
     <Compile Include="Classes\UssersHelper.cs" />
     <Compile Include="Context\RentACarDbContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AutosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MarcasController.cs" />
@@ -187,6 +188,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
+    <Compile Include="Models\Auto.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Marca.cs" />
@@ -195,6 +197,8 @@
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\Auto\AutoEditViewModel.cs" />
+    <Compile Include="ViewModels\Auto\AutoListViewModel.cs" />
     <Compile Include="ViewModels\Listador.cs" />
     <Compile Include="ViewModels\Marca\MarcaEditViewModel.cs" />
     <Compile Include="ViewModels\Marca\MarcaListViewModel.cs" />
@@ -204,6 +208,7 @@
     <Compile Include="ViewModels\Tipo\TipoEditViewModel.cs" />
     <Compile Include="ViewModels\Tipo\TipoListViewModel.cs" />
     <Compile Include="ViewModels\Usuarios\UsuarioEditViewModel.cs" />
+    <Compile Include="ViewModels\Usuarios\UsuarioListViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -392,6 +397,9 @@
     <Content Include="Views\Usuarios\Index.cshtml" />
     <Content Include="Views\Usuarios\Create.cshtml" />
     <Content Include="Views\Marcas\ReadOnlyIndex.cshtml" />
+    <Content Include="Views\Autos\Index.cshtml" />
+    <Content Include="Views\Autos\ReadOnlyIndex.cshtml" />
+    <Content Include="Views\Autos\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

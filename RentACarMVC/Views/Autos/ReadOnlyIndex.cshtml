@@ -1,0 +1,76 @@
+﻿@model IEnumerable<RentACarMVC.ViewModels.Auto.AutoListViewModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div>
+    <h2>Lista de Autos</h2>
+    <hr />
+
+</div>
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(m => m.MovilId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Patente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Tipo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Marca)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Modelo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Chofer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Disponible)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            foreach (var modelo in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(m => modelo.MovilId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => modelo.Patente)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => modelo.Tipo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => modelo.Marca)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => modelo.Modelo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => modelo.Chofer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => modelo.Disponible)
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8"> No se ingresaron autos todavía</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

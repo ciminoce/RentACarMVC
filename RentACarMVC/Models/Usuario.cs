@@ -12,5 +12,7 @@ namespace RentACarMVC.Models
         public string NombreUsuario { get; set; }
         public string MovilNumero { get; set; }
         public string Direccion { get; set; }
+
+        public string NombreApellido => $"{Nombres} {Apellido}";
     }
 }

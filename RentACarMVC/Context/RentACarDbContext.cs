@@ -19,6 +19,7 @@ namespace RentACarMVC.Context
             modelBuilder.Entity<Tipo>().ToTable("Tipos");
             modelBuilder.Entity<Modelo>().ToTable("Modelos");
             modelBuilder.Entity<Usuario>().ToTable("Usuarios");
+            modelBuilder.Entity<Auto>().ToTable("Autos");
 
         }
 
@@ -26,6 +27,7 @@ namespace RentACarMVC.Context
         public DbSet<Marca> Marcas { get; set; }
         public DbSet<Modelo> Modelos { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Auto> Autos { get; set; }
 
     }
 }

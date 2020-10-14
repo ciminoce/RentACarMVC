@@ -13,12 +13,11 @@
         <div class="col-md-6">
             <div class="form-group">
                 @Html.LabelFor(m => m.MovilId)
-                @Html.TextBoxFor(m => m.MovilId, new { @class = "form-control", autofocus = "autofocus" })
-                @Html.ValidationMessageFor(m => m.MovilId, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(m => m.MovilId, new { @class = "form-control", @readonly = true })
             </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.Patente)
-                @Html.TextBoxFor(m => m.Patente, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.Patente, new { @class = "form-control", autofocus = "autofocus" })
                 @Html.ValidationMessageFor(m => m.Patente, "", new { @class = "text-danger" })
             </div>
 
@@ -58,7 +57,37 @@
 @section scripts
 {
     <script>
+        $(document).ready(function () {
+            $("#TipoId").change(function() {
+                $("#ModeloId").empty();
+                $("#MarcaId").val(1);
+            });
 
+            $("#MarcaId").change(function() {
+                $("#ModeloId").empty();
+                $("#ModeloId").append('<option value="0">[Seleccionar Modelo]</option>');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetModelos")',
+                    dataType: 'json',
+                    data: {
+                        tipoId: $("#TipoId").val(),
+                        marcaId:$("#MarcaId").val()
+                    },
+                    success: function(modelos) {
+                        $.each(modelos,
+                            function(i, modelo) {
+                                $("#ModeloId").append('<option value="' + modelo.ModeloId + '">' + modelo.NombreModelo + '</option>');
+                            });
+                    },
+                    error: function(ex) {
+                        alert('Error al intentar cargar los modelos.' + ex);
+                    }
+                });
+                return false;
+            });
+        });
 
     </script>
 

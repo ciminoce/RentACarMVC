@@ -20,6 +20,7 @@ namespace RentACarMVC.Context
             modelBuilder.Entity<Modelo>().ToTable("Modelos");
             modelBuilder.Entity<Usuario>().ToTable("Usuarios");
             modelBuilder.Entity<Auto>().ToTable("Autos");
+            modelBuilder.Entity<Viaje>().ToTable("Viajes");
 
         }
 
@@ -28,6 +29,7 @@ namespace RentACarMVC.Context
         public DbSet<Modelo> Modelos { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Auto> Autos { get; set; }
+        public DbSet<Viaje> Viajes { get; set; }
 
     }
 }

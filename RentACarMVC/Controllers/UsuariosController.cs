@@ -78,7 +78,9 @@ namespace RentACarMVC.Controllers
         {
             UsuarioEditViewModel usuarioVm = new UsuarioEditViewModel
             {
-                ListaRoles = _applicationDb.Roles.ToList()
+                ListaRoles = _applicationDb.Roles
+                    .Where(r=>r.Name!="Admin")
+                    .ToList()
             };
             return View(usuarioVm);
         }

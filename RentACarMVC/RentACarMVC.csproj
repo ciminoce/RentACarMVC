@@ -183,18 +183,21 @@
     <Compile Include="Controllers\TiposController.cs" />
     <Compile Include="Controllers\UserAdminController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
+    <Compile Include="Controllers\ViajesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\Auto.cs" />
+    <Compile Include="Models\Enums\EstadoViaje.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Marca.cs" />
     <Compile Include="Models\Modelo.cs" />
     <Compile Include="Models\Tipo.cs" />
     <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Models\Viaje.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\Auto\AutoEditViewModel.cs" />
@@ -209,6 +212,8 @@
     <Compile Include="ViewModels\Tipo\TipoListViewModel.cs" />
     <Compile Include="ViewModels\Usuarios\UsuarioEditViewModel.cs" />
     <Compile Include="ViewModels\Usuarios\UsuarioListViewModel.cs" />
+    <Compile Include="ViewModels\Viaje\ViajeEditViewModel.cs" />
+    <Compile Include="ViewModels\Viaje\ViajeListViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -400,6 +405,7 @@
     <Content Include="Views\Autos\Index.cshtml" />
     <Content Include="Views\Autos\ReadOnlyIndex.cshtml" />
     <Content Include="Views\Autos\Create.cshtml" />
+    <Content Include="Views\Viajes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

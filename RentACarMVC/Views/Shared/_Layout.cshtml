@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
+    <script src="https://kit.fontawesome.com/766389a881.js" crossorigin="anonymous"></script>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -39,6 +40,9 @@
 
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="@Url.Action("Index","Autos")">Autos</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="@Url.Action("Index","Viajes")">Viajes</a>
+
                         </div>
 
                     </li>

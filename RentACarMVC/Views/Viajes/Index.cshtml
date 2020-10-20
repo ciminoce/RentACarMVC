@@ -1,4 +1,6 @@
-﻿@model IEnumerable<RentACarMVC.ViewModels.Viaje.ViajeListViewModel>
+﻿@using Microsoft.Ajax.Utilities
+@using RentACarMVC.Models.Enums
+@model IEnumerable<RentACarMVC.ViewModels.Viaje.ViajeListViewModel>
 @{
     ViewBag.Title = "Index";
 }
@@ -50,40 +52,93 @@
         {
             foreach (var modelo in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(m => modelo.MovilId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => modelo.Cliente)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => modelo.FechaHoraSalida)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => modelo.FechaHoraLlegada)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => modelo.Costo)
-                    </td>
-                    <td>
-                        <a href="@Url.Action("Suspender", "Viajes", new {id = modelo.ViajeId})" class="btn btn-danger">
-                            <i class="fas fa-trash-alt"></i> Suspender
-                        </a>
-                        <a href="@Url.Action("Finalizar", "Viajes", new {id = modelo.ViajeId})" class="btn btn-warning">
-                            <i class="fas fa-edit"></i> Finalizar
-                        </a>
+                if (modelo.EstadoViaje == EstadoViaje.EnProceso)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(m => modelo.MovilId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => modelo.Cliente)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => modelo.FechaHoraSalida)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => modelo.FechaHoraLlegada)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => modelo.Costo)
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Suspend", "Viajes", new {id = modelo.ViajeId})" class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i> Suspender
+                            </a>
+                            <a href="@Url.Action("Finish", "Viajes", new {id = modelo.ViajeId})" class="btn btn-warning">
+                                <i class="fas fa-edit"></i> Finalizar
+                            </a>
 
 
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+
+                }
+                else if (modelo.EstadoViaje==EstadoViaje.Suspendido)
+                {
+                    <tr style="background-color: bisque">
+                        <td>
+                            @Html.DisplayFor(m => modelo.MovilId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => modelo.Cliente)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => modelo.FechaHoraSalida)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => modelo.FechaHoraLlegada)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => modelo.Costo)
+                        </td>
+                        <td>
+
+                        </td>
+                    </tr>
+                   
+                }
+                else
+                {
+                    <tr style="background-color: lightblue">
+                        <td>
+                            @Html.DisplayFor(m => modelo.MovilId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => modelo.Cliente)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => modelo.FechaHoraSalida)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => modelo.FechaHoraLlegada)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => modelo.Costo)
+                        </td>
+                        <td>
+
+                        </td>
+                    </tr>
+
+                }
+               
             }
         }
         else
         {
-            <tr>
-                <td colspan="6"> No se viajes todavía</td>
-            </tr>
+        <tr>
+            <td colspan="6"> No se viajes todavía</td>
+        </tr>
         }
     </tbody>
 </table>

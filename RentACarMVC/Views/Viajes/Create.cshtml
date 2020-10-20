@@ -1,0 +1,46 @@
+﻿@model RentACarMVC.ViewModels.Viaje.ViajeEditViewModel
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Nuevo Modelo</h2>
+<hr />
+@using (Html.BeginForm("Create", "Viajes", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.AutoId)
+                @Html.DropDownListFor(m => m.AutoId, new SelectList(Model.Autos, "AutoId", "MovilId"), "Seleccione Móvil", new { @class = "form-control", autofocus = "autofocus" })
+                @Html.ValidationMessageFor(m => m.AutoId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.UsuarioId)
+                @Html.DropDownListFor(m => m.UsuarioId, new SelectList(Model.Clientes, "UsuarioId", "NombreApellido"), "Seleccione Ciente", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.UsuarioId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.FechaHoraSalida)
+                @Html.TextBoxFor(m => m.FechaHoraSalida, new {@Value=DateTime.Now.ToString(), @class = "form-control", @readonly=true })
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Guardar</button>
+                <a href="@Url.Action("Index", "Viajes")" class="btn btn-success">Volver</a>
+
+            </div>
+
+        </div>
+    </div>
+}
+@section scripts
+{
+    <script>
+
+
+    </script>
+
+}
+
+

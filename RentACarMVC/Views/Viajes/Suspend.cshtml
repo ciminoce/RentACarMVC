@@ -1,0 +1,48 @@
+﻿@model RentACarMVC.ViewModels.Viaje.ViajeListViewModel
+@{
+    ViewBag.Title = "Suspend";
+}
+
+<h2>Suspender Viaje</h2>
+<h3>¿Confirma que desea suspender el viaje siguiente?</h3>
+<hr />
+@using (Html.BeginForm("Suspend", "Viajes", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m=>m.ViajeId);
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.MovilId)
+                @Html.TextBoxFor(m => m.MovilId, new { @class = "form-control", @readonly = true })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Cliente)
+                @Html.TextBoxFor(m => m.Cliente, new { @class = "form-control", @readonly = true })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.FechaHoraSalida)
+                @Html.TextBoxFor(m => m.FechaHoraSalida, new { @class = "form-control", @readonly = true })
+            </div>
+            <div class="form-group">
+                <button class="btn btn-danger" type="submit">Guardar</button>
+                <a href="@Url.Action("Index", "Viajes")" class="btn btn-success">Volver</a>
+
+            </div>
+
+        </div>
+    </div>
+}
+@section scripts
+{
+    <script>
+
+
+    </script>
+
+}
+
+
+

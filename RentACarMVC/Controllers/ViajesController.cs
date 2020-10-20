@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity.EntityFramework;
 using RentACarMVC.Classes;
 using RentACarMVC.Context;
 using RentACarMVC.Models;
+using RentACarMVC.Models.Enums;
 using RentACarMVC.ViewModels.Viaje;
 
 namespace RentACarMVC.Controllers
@@ -44,6 +47,197 @@ namespace RentACarMVC.Controllers
             return View(viajeVm);
         }
 
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult Create(ViajeEditViewModel viajeVm)
+        {
+            if (!ModelState.IsValid)
+            {
+                viajeVm.Autos = _dbContext.Autos.Where(a => a.Disponible).ToList();
+                viajeVm.Clientes = CargarListaClientes();
+
+                return View(viajeVm);
+            }
+
+            Viaje viaje = new Viaje
+            {
+                ViajeId = viajeVm.ViajeId,
+                AutoId = viajeVm.AutoId,
+                UsuarioId = viajeVm.UsuarioId,
+                FechaHoraSalida = viajeVm.FechaHoraSalida,
+                Estado = EstadoViaje.EnProceso
+            };
+            if (_dbContext.Viajes.Any(v=>v.UsuarioId==viaje.UsuarioId && 
+                                         v.Estado==EstadoViaje.EnProceso))
+            {
+                viajeVm.Autos = _dbContext.Autos.Where(a => a.Disponible).ToList();
+                viajeVm.Clientes = CargarListaClientes();
+
+                ModelState.AddModelError(string.Empty,"Error: Usuario con viaje sin terminar...");
+                return View(viajeVm);
+            }
+
+            using (var tran=_dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    _dbContext.Viajes.Add(viaje);
+                    var autoEnViaje = _dbContext.Autos.SingleOrDefault(a => a.AutoId == viaje.AutoId);
+                    if (autoEnViaje == null)
+                    {
+                        viajeVm.Autos = _dbContext.Autos.Where(a => a.Disponible).ToList();
+                        viajeVm.Clientes = CargarListaClientes();
+
+                        ModelState.AddModelError(String.Empty, "Joder... estamos en problemas");
+                        return View(viajeVm);
+                    }
+
+                    autoEnViaje.Disponible = false;
+                    _dbContext.Entry(autoEnViaje).State = EntityState.Modified;
+                    _dbContext.SaveChanges();
+                    tran.Commit();
+                    TempData["Msg"] = "Viaje guardado...";
+                    return RedirectToAction("Index");
+
+                }
+                catch (Exception ex)
+                {
+                    viajeVm.Autos = _dbContext.Autos.Where(a => a.Disponible).ToList();
+                    viajeVm.Clientes = CargarListaClientes();
+
+                    ModelState.AddModelError(String.Empty, "Error al intentar guardar un viaje...");
+                    tran.Rollback();
+                    return View(viajeVm);
+                }
+
+            }
+        }
+
+        [HttpGet]
+        public ActionResult Suspend(int? id)
+        {
+            if (id==null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Viaje viaje = _dbContext.Viajes
+                .Include(v=>v.Auto)
+                .Include(v=>v.Usuario)
+                .SingleOrDefault(v => v.ViajeId == id);
+            if (viaje==null && viaje.Estado!=EstadoViaje.EnProceso)
+            {
+                return HttpNotFound("Código de viaje erróneo o viaje no En Proceso...");
+            }
+
+            var viajeVm = new ViajeListViewModel
+            {
+                ViajeId = viaje.ViajeId,
+                MovilId = viaje.Auto.MovilId,
+                Cliente = viaje.Usuario.NombreApellido,
+                FechaHoraSalida = viaje.FechaHoraSalida,
+                EstadoViaje = viaje.Estado
+            };
+            return View(viajeVm);
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult Suspend(ViajeListViewModel viajeVm)
+        {
+            var viajeEnProceso = _dbContext.Viajes.
+                SingleOrDefault(v => v.ViajeId == viajeVm.ViajeId);
+            viajeEnProceso.Estado = EstadoViaje.Suspendido;
+            using (var tran=_dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    _dbContext.Entry(viajeEnProceso).State = EntityState.Modified;
+                    var autoEnViaje = _dbContext.Autos.SingleOrDefault(a => a.AutoId == viajeEnProceso.AutoId);
+                    autoEnViaje.Disponible = true;
+                    _dbContext.Entry(autoEnViaje).State = EntityState.Modified;
+                    _dbContext.SaveChanges();
+                    tran.Commit();
+                    TempData["Msg"] = "Viaje suspendido...";
+                    return RedirectToAction("Index");
+
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError(String.Empty, "Error al intentar suspender un viaje");
+                    tran.Rollback();
+                    return View(viajeVm);
+
+                }
+            }
+        }
+
+        [HttpGet]
+        public ActionResult Finish(int? id)
+        {
+            if (id==null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Viaje viajeEnProceso = _dbContext.Viajes
+                .Include(v=>v.Auto)
+                .Include(v=>v.Usuario)
+                .SingleOrDefault(v => v.ViajeId == id);
+            if (viajeEnProceso==null || viajeEnProceso.Estado!=EstadoViaje.EnProceso)
+            {
+                return HttpNotFound("Código de viaje erróneo o viaje no En Proceso");
+            }
+            ViajeFinishViewModel viajeVm = new ViajeFinishViewModel()
+            {
+                ViajeId = viajeEnProceso.ViajeId,
+                MovilId = viajeEnProceso.Auto.MovilId,
+                Cliente = viajeEnProceso.Usuario.NombreApellido,
+                FechaHoraSalida = viajeEnProceso.FechaHoraSalida,
+                EstadoViaje = viajeEnProceso.Estado
+            };
+            return View(viajeVm);
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult Finish(ViajeFinishViewModel viajeVm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(viajeVm);
+            }
+
+            Viaje viajeEnProceso = _dbContext.Viajes
+                .SingleOrDefault(v => v.ViajeId == viajeVm.ViajeId);
+            viajeEnProceso.Estado = EstadoViaje.Finalizado;
+            viajeEnProceso.FechaHoraLlegada = viajeVm.FechaHoraLlegada;
+            viajeEnProceso.Costo = viajeVm.Costo;
+            using (var tran=_dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    _dbContext.Entry(viajeEnProceso).State = EntityState.Modified;
+                    var autoEnViaje = _dbContext.Autos
+                        .SingleOrDefault(a => a.AutoId == viajeEnProceso.AutoId);
+                    autoEnViaje.Disponible = true;
+                    _dbContext.Entry(autoEnViaje).State = EntityState.Modified;
+                    _dbContext.SaveChanges();
+                    tran.Commit();
+                    TempData["Msg"] = "Viaje finalizado";
+                    return RedirectToAction("Index");
+
+                }
+                catch (Exception ex)
+                {
+
+                   ModelState.AddModelError(string.Empty,"Error al intentar finalizar un viaje");
+                   tran.Rollback();
+                   return View(viajeVm);
+                }
+
+            }
+        }
+
         private List<Usuario> CargarListaClientes()
         {
             List<Usuario> clientes=new List<Usuario>();
@@ -72,7 +266,9 @@ namespace RentACarMVC.Controllers
                     Cliente = viaje.Usuario.NombreApellido,
                     FechaHoraSalida = viaje.FechaHoraSalida,
                     FechaHoraLlegada = viaje.FechaHoraLlegada,
-                    Costo = viaje.Costo
+                    Costo = viaje.Costo,
+                    EstadoViaje = viaje.Estado
+
                 };
                 listaVm.Add(viajeVm);
             }

@@ -213,6 +213,7 @@
     <Compile Include="ViewModels\Usuarios\UsuarioEditViewModel.cs" />
     <Compile Include="ViewModels\Usuarios\UsuarioListViewModel.cs" />
     <Compile Include="ViewModels\Viaje\ViajeEditViewModel.cs" />
+    <Compile Include="ViewModels\Viaje\ViajeFinishViewModel.cs" />
     <Compile Include="ViewModels\Viaje\ViajeListViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -406,6 +407,9 @@
     <Content Include="Views\Autos\ReadOnlyIndex.cshtml" />
     <Content Include="Views\Autos\Create.cshtml" />
     <Content Include="Views\Viajes\Index.cshtml" />
+    <Content Include="Views\Viajes\Create.cshtml" />
+    <Content Include="Views\Viajes\Suspend.cshtml" />
+    <Content Include="Views\Viajes\Finish.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

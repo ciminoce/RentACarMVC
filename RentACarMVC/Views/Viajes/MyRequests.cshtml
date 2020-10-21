@@ -1,0 +1,83 @@
+﻿@model IEnumerable<RentACarMVC.ViewModels.Solicitud.SolicitudListViewModel>
+@{
+    ViewBag.Title = "MyRequests";
+}
+
+<form method="post" action="@Url.Action("RequestRide", "Viajes")">
+    <div>
+        <button type="submit" class="btn btn-primary" style="float: right">
+            <i class="far fa-file-alt"></i>
+            Solicitar Viaje
+        </button>
+        <h2>Lista de Mis Solicitudes</h2>
+        <hr />
+
+    </div>
+
+</form>
+
+@if (TempData["Msg"] != null)
+{
+    var msg = (string)TempData["Msg"];
+    if (msg.Substring(0,5)=="Error")
+    {
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Error!</strong> @msg.
+        </div>
+
+    }
+    else
+    {
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Éxito!</strong> @msg.
+        </div>
+
+    }
+
+}
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(m => m.SolicitudId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.FechaHora)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.EstadoSolicitud)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            foreach (var modelo in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(m => modelo.SolicitudId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => modelo.FechaHora)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => modelo.EstadoSolicitud)
+                    </td>
+
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3"> No se cargaron solicitudes todavía</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

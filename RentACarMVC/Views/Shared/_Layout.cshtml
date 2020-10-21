@@ -64,6 +64,24 @@
                         </li>
 
                     }
+                    @if (Request.IsAuthenticated && User.IsInRole("Cliente"))
+                    {
+                        <li class="nav-item active dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Cliente
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="@Url.Action("MyRides", "Viajes")">Mis Viajes</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="@Url.Action("MyRequests", "Viajes")">Mis Solicitudes</a>
+
+
+                            </div>
+
+                        </li>
+
+                    }
+
                     @Html.Partial("_LoginPartial")
 
                 </ul>

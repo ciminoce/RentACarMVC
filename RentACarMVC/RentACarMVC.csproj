@@ -190,11 +190,13 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\Auto.cs" />
+    <Compile Include="Models\Enums\EstadoSolicitud.cs" />
     <Compile Include="Models\Enums\EstadoViaje.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Marca.cs" />
     <Compile Include="Models\Modelo.cs" />
+    <Compile Include="Models\Solicitud.cs" />
     <Compile Include="Models\Tipo.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\Viaje.cs" />
@@ -208,6 +210,7 @@
     <Compile Include="ViewModels\Modelo\ModeloEditViewModel.cs" />
     <Compile Include="ViewModels\Modelo\ModeloListViewModel.cs" />
     <Compile Include="ViewModels\PaginadorGenerico.cs" />
+    <Compile Include="ViewModels\Solicitud\SolicitudListViewModel.cs" />
     <Compile Include="ViewModels\Tipo\TipoEditViewModel.cs" />
     <Compile Include="ViewModels\Tipo\TipoListViewModel.cs" />
     <Compile Include="ViewModels\Usuarios\UsuarioEditViewModel.cs" />
@@ -410,6 +413,8 @@
     <Content Include="Views\Viajes\Create.cshtml" />
     <Content Include="Views\Viajes\Suspend.cshtml" />
     <Content Include="Views\Viajes\Finish.cshtml" />
+    <Content Include="Views\Viajes\MyRides.cshtml" />
+    <Content Include="Views\Viajes\MyRequests.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

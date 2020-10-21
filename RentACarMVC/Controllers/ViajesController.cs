@@ -4,16 +4,17 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using Microsoft.AspNet.Identity.EntityFramework;
 using RentACarMVC.Classes;
 using RentACarMVC.Context;
 using RentACarMVC.Models;
 using RentACarMVC.Models.Enums;
+using RentACarMVC.ViewModels.Solicitud;
 using RentACarMVC.ViewModels.Viaje;
 
 namespace RentACarMVC.Controllers
 {
-    [Authorize(Roles = "Admin, Cajero")]
     public class ViajesController : Controller
     {
         private readonly RentACarDbContext _dbContext;
@@ -25,6 +26,8 @@ namespace RentACarMVC.Controllers
             _dbContext=new RentACarDbContext();
             _identityDbContext=new IdentityDbContext();
         }
+
+        [Authorize(Roles = "Admin, Cajero")]
         // GET: Viajes
         public ActionResult Index()
         {
@@ -36,6 +39,7 @@ namespace RentACarMVC.Controllers
             return View(listaVm);
         }
 
+        [Authorize(Roles = "Admin, Cajero")]
         [HttpGet]
         public ActionResult Create()
         {
@@ -113,6 +117,7 @@ namespace RentACarMVC.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin, Cajero")]
         [HttpGet]
         public ActionResult Suspend(int? id)
         {
@@ -172,6 +177,7 @@ namespace RentACarMVC.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin, Cajero")]
         [HttpGet]
         public ActionResult Finish(int? id)
         {
@@ -274,6 +280,86 @@ namespace RentACarMVC.Controllers
             }
 
             return listaVm;
+        }
+
+        [Authorize(Roles = "Cliente")]
+        public ActionResult MyRides()
+        {
+
+            var listaViajes = _dbContext.Viajes
+                .Include(v => v.Auto)
+                .Include(v => v.Usuario)
+                .Where(v => v.Usuario.NombreUsuario == User.Identity.Name)
+                .ToList();
+            var listaVm = ConstruirListaViajeListViewModel(listaViajes);
+            return View(listaVm);
+        }
+
+        [Authorize(Roles = "Cliente")]
+        [HttpPost]
+        public ActionResult RequestRide()
+        {
+            var usuario = _dbContext.Usuarios
+                .SingleOrDefault(u => u.NombreUsuario == User.Identity.Name);
+
+            var solicitud = new Solicitud
+            {
+                UsuarioId = usuario.UsuarioId,
+                FechaHora = DateTime.Now,
+                EstadoSolicitud = EstadoSolicitud.Pendiente
+            };
+
+            if (!_dbContext.Solicitudes.Any(s=>s.UsuarioId==usuario.UsuarioId && 
+                                              s.EstadoSolicitud==EstadoSolicitud.Pendiente))
+            {
+                try
+                {
+                    _dbContext.Solicitudes.Add(solicitud);
+                    _dbContext.SaveChanges();
+                    TempData["Msg"] = "Solicitud cargada";
+                    return RedirectToAction("MyRequests");
+                }
+                catch (Exception ex)
+                {
+                    TempData["Msg"] = "Error al cargar una solicitud";
+                    return RedirectToAction("MyRides");
+                }
+
+            }
+            else
+            {
+                TempData["Msg"] = "Error: No se puede cargar otra solicitud por tener una pendiente";
+                return RedirectToAction("MyRides");
+            }
+        }
+
+        [Authorize(Roles = "Cliente")]
+        public ActionResult MyRequests()
+        {
+            var usuario = _dbContext.Usuarios
+                .SingleOrDefault(u => u.NombreUsuario == User.Identity.Name);
+            var listaSolicitudes = _dbContext.Solicitudes
+                .Where(s => s.Usuario.UsuarioId == usuario.UsuarioId)
+                .ToList();
+            var listaVm = ConstruirListaSolicitudesViewModel(listaSolicitudes);
+            return View(listaVm);
+        }
+
+        private List<SolicitudListViewModel> ConstruirListaSolicitudesViewModel(List<Solicitud> listaSolicitudes)
+        {
+            var lista=new List<SolicitudListViewModel>();
+            foreach (var solicitud in listaSolicitudes)
+            {
+                var solicitudVm = new SolicitudListViewModel
+                {
+                    SolicitudId = solicitud.SolicitudId,
+                    FechaHora = solicitud.FechaHora,
+                    EstadoSolicitud = solicitud.EstadoSolicitud
+                };
+                lista.Add(solicitudVm);
+            }
+
+            return lista;
         }
     }
 }
